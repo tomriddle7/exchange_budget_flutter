@@ -1,6 +1,8 @@
 import 'package:exchange_budget_flutter/Task.dart';
-import 'package:exchange_budget_flutter/main.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'TaskProvider.dart';
 
 class CustomDialog extends StatefulWidget {
   @override
@@ -54,8 +56,8 @@ class _CustomDialogState extends State<CustomDialog> {
         TextButton(
           child: Text("Close"),
           onPressed: () {
-            TaskModel newTask = TaskModel(nameController.text, _integer);
-            print(newTask);
+            Provider.of<TaskProvider>(context, listen: false)
+                .addTask(nameController.text, _integer);
             nameController.text = "";
             Navigator.pop(context);
           },
