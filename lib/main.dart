@@ -1,5 +1,6 @@
 import 'Task.dart';
 import 'CustomDialog.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,16 +61,39 @@ class TaskPage extends StatelessWidget {
   }
 
   Widget _createTodoList(task) {
-    return ListView.separated(
-      itemCount: task.getTaskList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _createTodoCard(task.getTaskList[index]);
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider(
-          thickness: 8.0,
-          height: 8.0,
-          color: Colors.transparent,
+    return GroupedListView<dynamic, String>(
+      elements: task.getTaskList,
+      groupBy: (element) => element.getMonth().toString(),
+      groupComparator: (value1, value2) => value2.compareTo(value1),
+      itemComparator: (item1, item2) =>
+          item1.getDate().compareTo(item2.getDate()),
+      order: GroupedListOrder.DESC,
+      useStickyGroupSeparators: true,
+      groupSeparatorBuilder: (String value) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          value,
+          textAlign: TextAlign.start,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ),
+      itemBuilder: (c, element) {
+        return Card(
+          elevation: 8.0,
+          margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          child: Container(
+            child: ListTile(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              title: Text(element.getTitle()),
+              trailing: Text('${element.getTaskState()}${element.getContent()}',
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      color: element.getTaskState() == '+'
+                          ? Colors.green
+                          : Colors.red)),
+            ),
+          ),
         );
       },
     );
@@ -102,7 +126,13 @@ class TaskPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(todoModel.getTitle(),
-            style: TextStyle(fontSize: 24.0, color: Colors.blue)),
+            style: TextStyle(fontSize: 24.0, color: Colors.black)),
+        Text('${todoModel.getTaskState()}${todoModel.getContent()}',
+            style: TextStyle(
+                fontSize: 24.0,
+                color: todoModel.getTaskState() == '+'
+                    ? Colors.green
+                    : Colors.red)),
         Divider(
           thickness: 8.0,
           height: 8.0,

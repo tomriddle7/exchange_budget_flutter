@@ -1,4 +1,4 @@
-import 'package:exchange_budget_flutter/Task.dart';
+import 'Task.dart';
 import 'package:flutter/material.dart';
 
 class TaskProvider with ChangeNotifier {
@@ -6,8 +6,8 @@ class TaskProvider with ChangeNotifier {
 
   List<TaskModel> get getTaskList => _taskList;
 
-  void addTask(String title, TaskState _integer) {
-    TaskModel newTask = TaskModel(title, _integer);
+  void addTask(String title, String content, DateTime date, TaskState _integer) {
+    TaskModel newTask = TaskModel(title, content, date, _integer);
     _taskList.add(newTask);
     notifyListeners();
   }
