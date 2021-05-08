@@ -1,4 +1,3 @@
-import 'Task.dart';
 import 'CustomDialog.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:flutter/material.dart';
@@ -33,19 +32,55 @@ class TaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final task = Provider.of<TaskProvider>(context);
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(this.title),
+        elevation: 0,
       ),
-      body: _createTodoList(task),
+      body: Column(
+        children: [
+          Stack(
+            children: [
+              ClipPath(
+                clipper: CustomShapeClipper(),
+                child: Container(
+                  height: 200.0,
+                  decoration: BoxDecoration(color: Colors.purple),
+                ),
+              ),
+              Column(
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          task.getCurrentMonth,
+                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Text(
+                      '${task.getMonthMoney().toString()}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Expanded(
+            child: _createTodoList(task),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
           showDialog(
@@ -56,7 +91,7 @@ class TaskPage extends StatelessWidget {
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
@@ -66,8 +101,8 @@ class TaskPage extends StatelessWidget {
       groupBy: (element) => element.getMonth().toString(),
       groupComparator: (value1, value2) => value2.compareTo(value1),
       itemComparator: (item1, item2) =>
-          item1.getDate().compareTo(item2.getDate()),
-      order: GroupedListOrder.DESC,
+          item2.getDate().compareTo(item1.getDate()),
+      order: GroupedListOrder.ASC,
       useStickyGroupSeparators: true,
       groupSeparatorBuilder: (String value) => Padding(
         padding: const EdgeInsets.all(8.0),
@@ -98,4 +133,20 @@ class TaskPage extends StatelessWidget {
       },
     );
   }
+}
+
+class CustomShapeClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+
+    path.lineTo(0.0, 340.0 - 200);
+    path.quadraticBezierTo(size.width / 2, 230, size.width, 340.0 - 200);
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }

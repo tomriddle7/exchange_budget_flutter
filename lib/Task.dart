@@ -9,7 +9,7 @@ class TaskModel {
   String getTitle() => _title;
   String getContent() => _content;
   DateTime getDate() => _date;
-  String getMonth() => '${_date.year.toString()}-${_date.month.toString().padLeft(2,'0')}';
+  String getMonth() => '${_date.year.toString()}년 ${_date.month.toString().padLeft(2,'0')}월';
   String getTaskState() => _state == TaskState.PLUS ? '+' : '-';
   String setTitle(String title) => _title = title;
   String setContent(String content) => _content = content;
