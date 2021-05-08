@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
       create: (context) => TaskProvider(),
       child: MaterialApp(
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.purple,
           ),
-          home: TaskPage(title: 'Provider Pattern Example')),
+          home: TaskPage(title: '이번달 가계부')),
     );
   }
 }
@@ -96,49 +96,6 @@ class TaskPage extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _createTodoCard(TaskModel todoModel) {
-    return Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8.0))),
-      child: Container(
-          padding: EdgeInsets.all(16.0), child: _createTodoItemRow(todoModel)),
-    );
-  }
-
-  Widget _createTodoItemRow(TaskModel todoModel) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _createTodoItemContentWidget(todoModel),
-        Icon(Icons.keyboard_arrow_right, color: Colors.blue)
-      ],
-    );
-  }
-
-  Widget _createTodoItemContentWidget(TaskModel todoModel) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(todoModel.getTitle(),
-            style: TextStyle(fontSize: 24.0, color: Colors.black)),
-        Text('${todoModel.getTaskState()}${todoModel.getContent()}',
-            style: TextStyle(
-                fontSize: 24.0,
-                color: todoModel.getTaskState() == '+'
-                    ? Colors.green
-                    : Colors.red)),
-        Divider(
-          thickness: 8.0,
-          height: 8.0,
-          color: Colors.transparent,
-        ),
-      ],
     );
   }
 }
